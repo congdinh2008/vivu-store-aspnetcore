@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ViVuStore.Data;
+using ViVuStore.Models.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,20 @@ builder.Services.AddDbContext<ViVuStoreDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ViVuStoreDbConnection"));
 });
+
+// Register Identity: UserManager, RoleManager, SignInManager
+builder.Services.AddIdentity<User, Role>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 8;
+    options.User.RequireUniqueEmail = true;
+})
+    .AddEntityFrameworkStores<ViVuStoreDbContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 

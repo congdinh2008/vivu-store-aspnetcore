@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ViVuStore.Core.Constants;
+using ViVuStore.Models;
 using ViVuStore.Models.Common;
 using ViVuStore.Models.Security;
 
@@ -32,5 +33,37 @@ public class ViVuStoreDbContext: IdentityDbContext<User, Role, Guid>
         // Global query filter for soft delete
         builder.Entity<User>().HasQueryFilter(x => !x.IsDeleted);
         builder.Entity<Role>().HasQueryFilter(x => !x.IsDeleted);
+    }
+
+    public override int SaveChanges()
+    {
+        BeforeSaveChange();
+        return base.SaveChanges();
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        BeforeSaveChange();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void BeforeSaveChange()
+    {
+        var entities = this.ChangeTracker.Entries<IBaseEntity>();
+
+        foreach (var item in entities)
+        {
+            switch (item.State)
+            {
+                case EntityState.Added:
+                    item.Entity.CreatedAt = DateTime.Now;
+                    item.Entity.CreatedById = null;
+                    break;
+                case EntityState.Modified:
+                    item.Entity.UpdatedAt = DateTime.Now;
+                    item.Entity.UpdatedById = null;
+                    break;
+            }
+        }
     }
 }

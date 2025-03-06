@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ViVuStore.Data;
+using ViVuStore.Data.Repositories;
 using ViVuStore.Data.SeedData;
+using ViVuStore.Data.UnitOfWorks;
+using ViVuStore.Models.Common;
 using ViVuStore.Models.Security;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Register controllers
+builder.Services.AddControllers();
 
 // Register DBContext
 builder.Services.AddDbContext<ViVuStoreDbContext>(options =>
@@ -30,6 +36,15 @@ builder.Services.AddIdentity<User, Role>(options =>
     .AddEntityFrameworkStores<ViVuStoreDbContext>()
     .AddDefaultTokenProviders();
 
+// Register IHttpContextAccessor
+builder.Services.AddHttpContextAccessor();
+
+// Register UnitOfWork
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Register IUserIdentity to get current user
+builder.Services.AddScoped<IUserIdentity, UserIdentity>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,5 +64,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 await app.RunAsync();

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ViVuStore.Core.Constants;
+using ViVuStore.Models.Common;
 using ViVuStore.Models.Security;
 
 namespace ViVuStore.Data;
@@ -12,6 +13,8 @@ public class ViVuStoreDbContext: IdentityDbContext<User, Role, Guid>
     {
         
     }
+
+    public DbSet<Category> Categories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

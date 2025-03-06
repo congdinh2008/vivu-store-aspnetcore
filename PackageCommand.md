@@ -13,6 +13,7 @@ dotnet add ViVuStore.Data package Microsoft.EntityFrameworkCore
 dotnet add ViVuStore.Data package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add ViVuStore.Data package Microsoft.AspNetCore.Identity.EntityFrameworkCore
 dotnet add ViVuStore.Data package Microsoft.AspNetCore.Identity
+dotnet add ViVuStore.Data package Newtonsoft.Json
 
 # Add package for ViVuStore.API
 dotnet add ViVuStore.API package Microsoft.EntityFrameworkCore

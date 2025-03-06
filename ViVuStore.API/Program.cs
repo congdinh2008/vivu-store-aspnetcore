@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ViVuStore.Data;
+using ViVuStore.Data.SeedData;
 using ViVuStore.Models.Security;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,16 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    // Seed data
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<ViVuStoreDbContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+
+    var rolesJsonPath = Path.Combine(app.Environment.WebRootPath, "data", "roles.json");
+    var usersJsonPath = Path.Combine(app.Environment.WebRootPath, "data", "users.json");
+    DbInitializer.Seed(context, userManager, roleManager, rolesJsonPath, usersJsonPath);
 }
 
 app.UseHttpsRedirection();

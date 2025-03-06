@@ -4,7 +4,7 @@
 
 ### Add a migration
 ```bash
-dotnet ef migrations add AddIdentityModel --project ViVuStore.Data --startup-project ViVuStore.API --context ViVuStoreDbContext --output-dir Migrations
+dotnet ef migrations add AddCategoryModel --project ViVuStore.Data --startup-project ViVuStore.API --context ViVuStoreDbContext --output-dir Migrations
 dotnet ef migrations add [MigrationName] --project ViVuStore.Data --startup-project ViVuStore.API --context ViVuStoreDbContext --output-dir Migrations
 dotnet ef migrations add [MigrationName] --project ViVuStore.Data --startup-project ViVuStore.API --context StorageDbContext --output-dir Migrations/Storage
 ```
@@ -17,7 +17,7 @@ dotnet ef database update --project ViVuStore.Data --startup-project ViVuStore.A
 
 ### Roll back a migration
 ```bash
-dotnet ef database update [MigrationName] --project ViVuStore.Data --startup-project ViVuStore.API --context ViVuStoreDbContext
+dotnet ef database update AddIdentityModel --project ViVuStore.Data --startup-project ViVuStore.API --context ViVuStoreDbContext
 dotnet ef database update [MigrationName] --project ViVuStore.Data --startup-project ViVuStore.API --context StorageDbContext
 ```
 

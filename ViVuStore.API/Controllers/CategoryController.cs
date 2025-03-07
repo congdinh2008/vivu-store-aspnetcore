@@ -1,4 +1,6 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ViVuStore.Business.Handlers;
 
 namespace ViVuStore.API.Controllers;
 
@@ -6,13 +8,17 @@ namespace ViVuStore.API.Controllers;
 [ApiController]
 public class CategoryController : ControllerBase
 {
+    private readonly IMediator _mediator;
 
-    public CategoryController()
+    public CategoryController(IMediator mediator)
     {
+        _mediator = mediator;
     }
 
-    public IActionResult Get()
+    public async Task<IActionResult> GetAllAsync()
     {
-        return Ok();
+        var query = new CategoryGetAllQuery();
+        var result = await _mediator.Send(query);
+        return Ok(result);
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ViVuStore.Business.Handlers;
 using ViVuStore.Data;
 using ViVuStore.Data.Repositories;
 using ViVuStore.Data.SeedData;
@@ -44,6 +45,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Register IUserIdentity to get current user
 builder.Services.AddScoped<IUserIdentity, UserIdentity>();
+
+// Register MediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CategoryCreateUpdateCommand).Assembly));
 
 var app = builder.Build();
 

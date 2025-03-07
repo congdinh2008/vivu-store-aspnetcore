@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using ViVuStore.Business.ViewModels;
 using ViVuStore.Core.Exceptions;
 using ViVuStore.Data.UnitOfWorks;
@@ -12,8 +13,8 @@ public class CategoryGetByIdQueryHandler(IUnitOfWork unitOfWork) : BaseHandler(u
         CategoryGetByIdQuery request,
         CancellationToken cancellationToken)
     {
-        var category = await _unitOfWork.CategoryRepository
-            .GetByIdAsync(request.Id) ??
+        var category = await _unitOfWork.CategoryRepository.GetQuery()
+            .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken) ??
             throw new ResourceNotFoundException("Category not found");
 
         return new CategoryViewModel
@@ -22,11 +23,11 @@ public class CategoryGetByIdQueryHandler(IUnitOfWork unitOfWork) : BaseHandler(u
             Name = category.Name,
             Description = category.Description,
             CreatedAt = category.CreatedAt,
-            CreatedBy = category.CreatedBy!.DisplayName ?? "",
+            CreatedBy = category.CreatedBy != null ? category.CreatedBy.DisplayName : "",
             UpdatedAt = category.UpdatedAt,
-            UpdatedBy = category.UpdatedBy!.DisplayName ?? "",
+            UpdatedBy = category.UpdatedBy != null ? category.UpdatedBy.DisplayName : "",
             DeletedAt = category.DeletedAt,
-            DeletedBy = category.DeletedBy!.DisplayName ?? "",
+            DeletedBy = category.DeletedBy != null ? category.DeletedBy.DisplayName : "",
             IsDeleted = category.IsDeleted,
             IsActive = category.IsActive
         };

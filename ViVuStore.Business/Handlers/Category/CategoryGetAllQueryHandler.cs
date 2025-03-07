@@ -13,7 +13,7 @@ public class CategoryGetAllQueryHandler(IUnitOfWork unitOfWork) : BaseHandler(un
         CancellationToken cancellationToken)
     {
         var categories = await _unitOfWork.CategoryRepository
-            .GetQuery().ToListAsync(cancellationToken);
+            .GetQuery().Include(x => x.CreatedBy).ToListAsync(cancellationToken);
 
         return categories.Select(x => new CategoryViewModel
         {

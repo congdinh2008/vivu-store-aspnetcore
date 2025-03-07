@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using ViVuStore.Core.Constants;
 using ViVuStore.Models.Security;
 
 namespace ViVuStore.Data.Repositories;
@@ -16,7 +17,7 @@ public class UserIdentity : IUserIdentity
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public virtual Guid UserId => GetCurrentUserAsync().Result?.Id ?? Guid.Empty;
+    public virtual Guid UserId => GetCurrentUserAsync().Result?.Id ?? CoreConstants.SystemAdministratorId;
 
     private async Task<User?> GetCurrentUserAsync()
     {

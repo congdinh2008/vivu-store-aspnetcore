@@ -46,6 +46,7 @@ public abstract class RepositoryBase<T, TContext> : GenericRepository<T, TContex
         else
         {
             entity.DeletedAt = DateTime.UtcNow;
+            entity.DeletedById = CurrentUserId;
             entity.IsDeleted = true;
             UpdateEntityObject(entity);
         }

@@ -57,11 +57,9 @@ public class ViVuStoreDbContext: IdentityDbContext<User, Role, Guid>
             {
                 case EntityState.Added:
                     item.Entity.CreatedAt = DateTime.Now;
-                    item.Entity.CreatedById = null;
                     break;
                 case EntityState.Modified:
                     item.Entity.UpdatedAt = DateTime.Now;
-                    item.Entity.UpdatedById = null;
                     break;
             }
         }

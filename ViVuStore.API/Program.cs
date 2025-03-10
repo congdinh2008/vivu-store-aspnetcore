@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using ViVuStore.API.Configuration;
@@ -90,6 +91,21 @@ builder.Services.AddMediatR(cfg =>
 
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+});
+
+// Register Versiong
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    // Add version 1.0 to the explorer
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
 
 var app = builder.Build();
 

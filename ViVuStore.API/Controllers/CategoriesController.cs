@@ -10,7 +10,8 @@ namespace ViVuStore.API.Controllers;
 /// </summary>
 [Produces("application/json")]
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/categories")]
+[ApiVersion("1.0")]
 public class CategoriesController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;

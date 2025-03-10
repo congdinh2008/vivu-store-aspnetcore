@@ -16,6 +16,7 @@ public class ViVuStoreDbContext: IdentityDbContext<User, Role, Guid>
     }
 
     public DbSet<Category> Categories { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -30,6 +31,13 @@ public class ViVuStoreDbContext: IdentityDbContext<User, Role, Guid>
         builder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims", CoreConstants.Schemas.Security);
         builder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens", CoreConstants.Schemas.Security);
 
+        // Configure RefreshToken relationship
+        builder.Entity<RefreshToken>()
+            .HasOne(r => r.User)
+            .WithMany()
+            .HasForeignKey(r => r.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+            
         // Global query filter for soft delete
         builder.Entity<User>().HasQueryFilter(x => !x.IsDeleted);
         builder.Entity<Role>().HasQueryFilter(x => !x.IsDeleted);

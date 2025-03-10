@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore.Storage;
 using ViVuStore.Data.Repositories;
 using ViVuStore.Models;
@@ -17,6 +16,7 @@ public interface IUnitOfWork : IDisposable
 
     IMasterDataRepository<Category> CategoryRepository { get; }
 
+    IRepository<RefreshToken> RefreshTokenRepository { get; }
     #endregion
 
     #region Repositories

@@ -29,6 +29,36 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("search")]
+    [ProducesResponseType(typeof(IEnumerable<CategoryViewModel>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> SearchAsync(
+        [FromQuery] string keyword,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string orderBy = "CreatedAt",
+        [FromQuery] OrderDirection orderDirection = OrderDirection.ASC
+    )
+    {
+        var query = new CategorySearchQuery()
+        {
+            Keyword = keyword,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            OrderBy = orderBy,
+            OrderDirection = orderDirection
+        };
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpPost("search")]
+    [ProducesResponseType(typeof(IEnumerable<CategoryViewModel>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> SearchAsync([FromBody] CategorySearchQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
     /// <summary>
     /// Retrieves a specific category by its ID.
     /// </summary>
@@ -41,16 +71,17 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByIdAsync(Guid id)
     {
-        var query = new CategoryGetByIdQuery(){
+        var query = new CategoryGetByIdQuery()
+        {
             Id = id
         };
         var result = await _mediator.Send(query);
-        
+
         if (result == null)
         {
             return NotFound();
         }
-        
+
         return Ok(result);
     }
 
@@ -66,11 +97,11 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(CategoryCreateUpdateCommand command)
     {
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        
+
         var result = await _mediator.Send(command);
         return Ok(result);
     }
@@ -92,18 +123,18 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     {
         command.Id = id;
 
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
         var result = await _mediator.Send(command);
-        
+
         if (result == null)
         {
             return NotFound();
         }
-        
+
         return Ok(result);
     }
 }

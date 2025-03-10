@@ -14,6 +14,7 @@ using ViVuStore.Data.Repositories;
 using ViVuStore.Data.SeedData;
 using ViVuStore.Data.UnitOfWorks;
 using ViVuStore.Models.Security;
+using ViVuStore.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -162,6 +163,9 @@ if (app.Environment.IsDevelopment())
     var usersJsonPath = Path.Combine(app.Environment.WebRootPath, "data", "users.json");
     DbInitializer.Seed(context, userManager, roleManager, rolesJsonPath, usersJsonPath);
 }
+
+// Add custom exception handler middleware
+app.UseCustomExceptionHandler();
 
 app.UseHttpsRedirection();
 

@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ViVuLMS.Core;
@@ -7,7 +8,7 @@ using ViVuStore.Data.UnitOfWorks;
 
 namespace ViVuStore.Business.Handlers;
 
-public class CategorySeachQueryHandler(IUnitOfWork unitOfWork) : BaseHandler(unitOfWork),
+public class CategorySeachQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : BaseHandler(unitOfWork, mapper),
     IRequestHandler<CategorySearchQuery, PaginatedResult<CategoryViewModel>>
 {
     public async Task<PaginatedResult<CategoryViewModel>> Handle(
@@ -45,20 +46,7 @@ public class CategorySeachQueryHandler(IUnitOfWork unitOfWork) : BaseHandler(uni
             .ToListAsync(cancellationToken);
 
         // Chuyen du lieu sang view model
-        var viewModels = items.Select(x => new CategoryViewModel
-        {
-            Id = x.Id,
-            Name = x.Name,
-            Description = x.Description,
-            CreatedAt = x.CreatedAt,
-            CreatedBy = x.CreatedBy != null ? x.CreatedBy.DisplayName : "",
-            UpdatedAt = x.UpdatedAt,
-            UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.DisplayName : "",
-            DeletedAt = x.DeletedAt,
-            DeletedBy = x.DeletedBy != null ? x.DeletedBy.DisplayName : "",
-            IsDeleted = x.IsDeleted,
-            IsActive = x.IsActive
-        });
+        var viewModels = _mapper.Map<IEnumerable<CategoryViewModel>>(items);
 
         // Tra ve ket qua
         return new PaginatedResult<CategoryViewModel>(request.PageNumber, request.PageSize, total, viewModels);

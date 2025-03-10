@@ -36,7 +36,8 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10,
         [FromQuery] string orderBy = "CreatedAt",
-        [FromQuery] OrderDirection orderDirection = OrderDirection.ASC
+        [FromQuery] OrderDirection orderDirection = OrderDirection.ASC,
+        [FromQuery] bool? includeInactive = false
     )
     {
         var query = new CategorySearchQuery()
@@ -45,7 +46,8 @@ public class CategoriesController(IMediator mediator) : ControllerBase
             PageNumber = pageNumber,
             PageSize = pageSize,
             OrderBy = orderBy,
-            OrderDirection = orderDirection
+            OrderDirection = orderDirection,
+            IncludeInactive = includeInactive
         };
         var result = await _mediator.Send(query);
         return Ok(result);

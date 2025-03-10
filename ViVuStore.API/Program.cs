@@ -1,10 +1,14 @@
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ViVuStore.API.Configuration;
 using ViVuStore.Business.Handlers;
+using ViVuStore.Business.Services;
 using ViVuStore.Data;
 using ViVuStore.Data.Repositories;
 using ViVuStore.Data.SeedData;
@@ -85,6 +89,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // Register IUserIdentity to get current user
 builder.Services.AddScoped<IUserIdentity, UserIdentity>();
 
+// Register Token Service
+builder.Services.AddScoped<ITokenService, TokenService>();
+
 // Register MediatR
 builder.Services.AddMediatR(cfg => 
     cfg.RegisterServicesFromAssembly(typeof(CategoryCreateUpdateCommand).Assembly));
@@ -105,6 +112,29 @@ builder.Services.AddVersionedApiExplorer(options =>
     // Add version 1.0 to the explorer
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
+});
+
+// Register JWT with Bearer token
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+            builder.Configuration["JWT:Secret"] ?? "congdinh2012@hotmail.com"))
+    };
 });
 
 var app = builder.Build();

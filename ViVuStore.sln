@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Appendix", "Appendix", "{AD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViVuStore.Core", "ViVuStore.Core\ViVuStore.Core.csproj", "{5978B1AB-AF04-44DC-A43F-755387453FE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViVuStore.NUnitTesting", "ViVuStore.NUnitTesting\ViVuStore.NUnitTesting.csproj", "{49F150DA-7933-45CC-814D-7D4AAB67302F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{5978B1AB-AF04-44DC-A43F-755387453FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5978B1AB-AF04-44DC-A43F-755387453FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5978B1AB-AF04-44DC-A43F-755387453FE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49F150DA-7933-45CC-814D-7D4AAB67302F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49F150DA-7933-45CC-814D-7D4AAB67302F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49F150DA-7933-45CC-814D-7D4AAB67302F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49F150DA-7933-45CC-814D-7D4AAB67302F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ViVuStore.Business.Handlers;
 using ViVuStore.Business.ViewModels;
@@ -12,6 +13,7 @@ namespace ViVuStore.API.Controllers;
 [ApiController]
 [Route("api/v{version:apiVersion}/categories")]
 [ApiVersion("1.0")]
+[Authorize(Roles = "System Administrator, Administrator")]
 public class CategoriesController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
@@ -21,7 +23,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <returns>A collection of all categories.</returns>
     /// <response code="200">Returns the list of categories</response>
-    [HttpGet]
+    [HttpGet()]
     [ProducesResponseType(typeof(IEnumerable<CategoryViewModel>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAsync()
     {

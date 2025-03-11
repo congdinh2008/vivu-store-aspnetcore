@@ -138,6 +138,19 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", opt => opt
+        .WithOrigins(builder.Configuration.GetSection("CORs:AllowedOrigins").Get<string[]>())
+        .WithHeaders(builder.Configuration.GetSection("CORs:AllowedHeaders").Get<string[]>())
+        .WithMethods(builder.Configuration.GetSection("CORs:AllowedMethods").Get<string[]>()));
+
+    options.AddPolicy("AllowAnyOrigin", opt => opt
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -168,6 +181,8 @@ if (app.Environment.IsDevelopment())
 app.UseCustomExceptionHandler();
 
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
 
 // Add authentication and authorization middleware
 app.UseAuthentication();

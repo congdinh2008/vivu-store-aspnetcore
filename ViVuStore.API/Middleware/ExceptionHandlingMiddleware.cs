@@ -41,7 +41,7 @@ public class ExceptionHandlingMiddleware
         var response = new
         {
             StatusCode = (int)statusCode,
-            Message = exception.Message
+            Message = exception.Message + "Ahihi"
         };
 
         context.Response.ContentType = "application/json";

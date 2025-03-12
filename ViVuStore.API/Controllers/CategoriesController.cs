@@ -14,9 +14,17 @@ namespace ViVuStore.API.Controllers;
 [Route("api/v{version:apiVersion}/categories")]
 [ApiVersion("1.0")]
 [Authorize(Roles = "System Administrator, Administrator")]
-public class CategoriesController(IMediator mediator) : ControllerBase
+public class CategoriesController : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
+    private readonly IMediator _mediator;
+
+    private readonly ILogger<CategoriesController> _logger;
+
+    public CategoriesController(IMediator mediator, ILogger<CategoriesController> logger)
+    {
+        _mediator = mediator;
+        _logger = logger;
+    }
 
     /// <summary>
     /// Retrieves all categories.
@@ -27,6 +35,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<CategoryViewModel>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAsync()
     {
+        _logger.LogInformation("Getting all categories");
         var query = new CategoryGetAllQuery();
         var result = await _mediator.Send(query);
         return Ok(result);

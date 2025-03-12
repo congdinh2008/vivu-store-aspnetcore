@@ -18,6 +18,8 @@ public class ViVuStoreDbContext: IdentityDbContext<User, Role, Guid>
     public DbSet<Category> Categories { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -52,6 +54,29 @@ public class ViVuStoreDbContext: IdentityDbContext<User, Role, Guid>
             .WithMany()
             .HasForeignKey(p => p.SupplierId)
             .OnDelete(DeleteBehavior.SetNull);
+            
+        // Configure Order relationships
+        builder.Entity<Order>()
+            .HasOne(o => o.User)
+            .WithMany()
+            .HasForeignKey(o => o.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Configure OrderDetail relationships - composite primary key
+        builder.Entity<OrderDetail>()
+            .HasKey(od => new { od.OrderId, od.ProductId });
+            
+        builder.Entity<OrderDetail>()
+            .HasOne(od => od.Order)
+            .WithMany(o => o.OrderDetails)
+            .HasForeignKey(od => od.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+            
+        builder.Entity<OrderDetail>()
+            .HasOne(od => od.Product)
+            .WithMany()
+            .HasForeignKey(od => od.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
             
         // Global query filter for soft delete
         builder.Entity<User>().HasQueryFilter(x => !x.IsDeleted);

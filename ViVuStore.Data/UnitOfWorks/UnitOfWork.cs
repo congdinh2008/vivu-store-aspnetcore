@@ -38,6 +38,12 @@ public class UnitOfWork : IUnitOfWork
     private IMasterDataRepository<Product>? _productRepository;
     public IMasterDataRepository<Product> ProductRepository => _productRepository ??= new MasterDataRepository<Product>(_context, _currentUser);
 
+    private IMasterDataRepository<Order>? _orderRepository;
+    public IMasterDataRepository<Order> OrderRepository => _orderRepository ??= new MasterDataRepository<Order>(_context, _currentUser);
+    
+    private IRepository<OrderDetail>? _orderDetailRepository;
+    public IRepository<OrderDetail> OrderDetailRepository => _orderDetailRepository ??= new Repository<OrderDetail>(_context, _currentUser);
+
     #endregion
 
     #region Implementation of Repositories

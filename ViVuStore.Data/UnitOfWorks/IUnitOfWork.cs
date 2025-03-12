@@ -20,6 +20,10 @@ public interface IUnitOfWork : IDisposable
 
     IMasterDataRepository<Product> ProductRepository { get; }
 
+    IMasterDataRepository<Order> OrderRepository { get; }
+    
+    IRepository<OrderDetail> OrderDetailRepository { get; }
+
     IRepository<RefreshToken> RefreshTokenRepository { get; }
     #endregion
 

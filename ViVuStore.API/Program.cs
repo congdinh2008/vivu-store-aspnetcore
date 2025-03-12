@@ -141,9 +141,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", opt => opt
-        .WithOrigins(builder.Configuration.GetSection("CORs:AllowedOrigins").Get<string[]>())
-        .WithHeaders(builder.Configuration.GetSection("CORs:AllowedHeaders").Get<string[]>())
-        .WithMethods(builder.Configuration.GetSection("CORs:AllowedMethods").Get<string[]>()));
+        .WithOrigins(builder.Configuration.GetSection("CORs:AllowedOrigins").Get<string[]>() ?? [])
+        .WithHeaders(builder.Configuration.GetSection("CORs:AllowedHeaders").Get<string[]>() ?? [])
+        .WithMethods(builder.Configuration.GetSection("CORs:AllowedMethods").Get<string[]>() ?? []));
 
     options.AddPolicy("AllowAnyOrigin", opt => opt
         .AllowAnyOrigin()

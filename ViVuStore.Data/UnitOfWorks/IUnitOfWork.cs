@@ -16,6 +16,8 @@ public interface IUnitOfWork : IDisposable
 
     IMasterDataRepository<Category> CategoryRepository { get; }
 
+    IMasterDataRepository<Supplier> SupplierRepository { get; }
+
     IRepository<RefreshToken> RefreshTokenRepository { get; }
     #endregion
 

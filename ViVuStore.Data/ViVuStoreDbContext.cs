@@ -16,6 +16,7 @@ public class ViVuStoreDbContext: IdentityDbContext<User, Role, Guid>
     }
 
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)

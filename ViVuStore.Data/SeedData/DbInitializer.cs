@@ -4,7 +4,7 @@ using ViVuStore.Models.Security;
 
 namespace ViVuStore.Data.SeedData;
 
-public class DbInitializer
+public static class DbInitializer
 {
     public static void Seed(ViVuStoreDbContext context, UserManager<User> userManager, RoleManager<Role> roleManager,
         string rolesJsonPath, string usersJsonPath)

@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore.Storage;
 using ViVuStore.Data.Repositories;
 using ViVuStore.Models;
@@ -32,6 +31,9 @@ public class UnitOfWork : IUnitOfWork
 
     private IMasterDataRepository<Category>? _categoryRepository;
     public IMasterDataRepository<Category> CategoryRepository => _categoryRepository ??= new MasterDataRepository<Category>(_context, _currentUser);
+
+    private IMasterDataRepository<Supplier>? _supplierRepository;
+    public IMasterDataRepository<Supplier> SupplierRepository => _supplierRepository ??= new MasterDataRepository<Supplier>(_context, _currentUser);
 
     #endregion
 

@@ -34,6 +34,9 @@ public class UnitOfWork : IUnitOfWork
 
     private IMasterDataRepository<Supplier>? _supplierRepository;
     public IMasterDataRepository<Supplier> SupplierRepository => _supplierRepository ??= new MasterDataRepository<Supplier>(_context, _currentUser);
+    
+    private IMasterDataRepository<Product>? _productRepository;
+    public IMasterDataRepository<Product> ProductRepository => _productRepository ??= new MasterDataRepository<Product>(_context, _currentUser);
 
     #endregion
 

@@ -4,7 +4,7 @@
 
 ### Add a migration
 ```bash
-dotnet ef migrations add AddSupplierModel --project ViVuStore.Data --startup-project ViVuStore.API --context ViVuStoreDbContext --output-dir Migrations
+dotnet ef migrations add AddProductModel --project ViVuStore.Data --startup-project ViVuStore.API --context ViVuStoreDbContext --output-dir Migrations
 dotnet ef migrations add [MigrationName] --project ViVuStore.Data --startup-project ViVuStore.API --context ViVuStoreDbContext --output-dir Migrations
 dotnet ef migrations add [MigrationName] --project ViVuStore.Data --startup-project ViVuStore.API --context StorageDbContext --output-dir Migrations/Storage
 ```

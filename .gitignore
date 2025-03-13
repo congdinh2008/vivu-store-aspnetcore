@@ -1,4 +1,67 @@
-**/bin/*
-**/obj/*
-**/.vscode/*
+# Build results
+**/bin/
+**/obj/
+**/out/
+
+# Visual Studio and VS Code files
+**/.vs/
+**/.vscode/
+**/*.user
+**/*.userosscache
+**/*.suo
+**/*.userprefs
+**/.idea/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Logs and databases
+**/logs/
+**/*.log
+**/*.sqlite
+**/*.db
+**/*.db-*
+
+# OS generated files
 **/.DS_Store
+**/.DS_Store?
+**/._*
+**/.Spotlight-V100
+**/.Trashes
+**/ehthumbs.db
+**/Thumbs.db
+
+# Docker files (optional, if you want them versioned)
+# **/docker-compose.override.yml
+
+# Environment files - never commit these
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+**/appsettings.Development.json
+**/appsettings.Production.json
+**/appsettings.Local.json
+**/appsettings.Docker.json
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Visual Studio Code directories
+.history/
+
+# Rider files
+.idea/
+*.sln.iml
+
+# User-specific files
+*.rsuser
+
+# Secret keys and certificates
+*.pfx
+*.key
+**/secrets/

@@ -18,6 +18,14 @@ using ViVuStore.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add configuration sources including environment variables
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -62,9 +70,16 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddControllers();
 
 // Register DBContext
+var connectionString = builder.Configuration.GetConnectionString("ViVuStoreDbConnection");
 builder.Services.AddDbContext<ViVuStoreDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ViVuStoreDbConnection"));
+    options.UseSqlServer(connectionString, sqlOptions =>
+    {
+        sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null);
+    });
 });
 
 // Register Identity: UserManager, RoleManager, SignInManager
@@ -94,7 +109,7 @@ builder.Services.AddScoped<IUserIdentity, UserIdentity>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 // Register MediatR
-builder.Services.AddMediatR(cfg => 
+builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CategoryCreateUpdateCommand).Assembly));
 
 // Add AutoMapper
@@ -134,7 +149,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["JWT:Issuer"],
         ValidAudience = builder.Configuration["JWT:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-            builder.Configuration["JWT:Secret"] ?? "congdinh2012@hotmail.com"))
+            builder.Configuration["JWT:Secret"] ?? throw new InvalidOperationException("JWT:Secret is not configured.")))
     };
 });
 
@@ -154,7 +169,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Docker")
 {
     app.MapOpenApi();
     app.UseSwagger();
@@ -172,15 +187,73 @@ if (app.Environment.IsDevelopment())
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 
+    // For Docker environment, add retry logic for migrations
+    if (app.Environment.EnvironmentName == "Docker")
+    {
+        var retryCount = 0;
+        const int maxRetries = 10;
+        var delay = TimeSpan.FromSeconds(5);
+
+        while (retryCount < maxRetries)
+        {
+            try
+            {
+                Console.WriteLine("Attempting to apply database migrations...");
+                await context.Database.MigrateAsync();
+                Console.WriteLine("Database migrations applied successfully.");
+                break;
+            }
+            catch (Exception ex)
+            {
+                retryCount++;
+                Console.WriteLine($"Failed to apply migrations: {ex.Message}. Retry {retryCount} of {maxRetries}.");
+                if (retryCount >= maxRetries)
+                {
+                    throw;
+                }
+                await Task.Delay(delay);
+            }
+        }
+    }
+    else
+    {
+        // For development, just apply migrations directly
+        await context.Database.MigrateAsync();
+    }
+
+    // Debug information about seed file paths
     var rolesJsonPath = Path.Combine(app.Environment.WebRootPath, "data", "roles.json");
     var usersJsonPath = Path.Combine(app.Environment.WebRootPath, "data", "users.json");
-    DbInitializer.Seed(context, userManager, roleManager, rolesJsonPath, usersJsonPath);
+    
+    Console.WriteLine($"WebRootPath: {app.Environment.WebRootPath}");
+    Console.WriteLine($"Roles JSON path: {rolesJsonPath}");
+    Console.WriteLine($"Users JSON path: {usersJsonPath}");
+    Console.WriteLine($"Roles file exists: {File.Exists(rolesJsonPath)}");
+    Console.WriteLine($"Users file exists: {File.Exists(usersJsonPath)}");
+    
+    // Ensure the directory exists
+    Directory.CreateDirectory(Path.Combine(app.Environment.WebRootPath, "data"));
+    
+    // Attempt to seed the database
+    try
+    {
+        DbInitializer.Seed(context, userManager, roleManager, rolesJsonPath, usersJsonPath);
+        Console.WriteLine("Database seeded successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error seeding database: {ex.Message}");
+    }
 }
 
 // Add custom exception handler middleware
 app.UseCustomExceptionHandler();
 
-app.UseHttpsRedirection();
+// Modify HTTPS redirection to be conditional based on environment
+if (!app.Environment.EnvironmentName.Equals("Docker", StringComparison.OrdinalIgnoreCase))
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowAnyOrigin");
 

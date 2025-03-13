@@ -50,6 +50,7 @@ public static class DbInitializer
                     PhoneNumber = user.PhoneNumber,
                     EmailConfirmed = true,
                     DateOfBirth = DateTime.Parse(user.DateOfBirth).ToUniversalTime(),
+                    IsActive = true,
                 };
 
                 string password = passwordHash.HashPassword(newUser, user.Password);

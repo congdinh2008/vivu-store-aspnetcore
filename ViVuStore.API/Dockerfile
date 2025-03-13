@@ -42,5 +42,6 @@ ENV JWT__Issuer="ViVuStore"
 ENV JWT__Audience="ViVuStoreClient"
 ENV JWT__AccessTokenExpiryMinutes="15"
 ENV JWT__RefreshTokenExpiryDays="7"
+ENV DB_PORT=1433
 
 ENTRYPOINT ["dotnet", "ViVuStore.API.dll"]

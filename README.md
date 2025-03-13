@@ -98,6 +98,11 @@ nano ViVuStore.API/appsettings.Docker.json
 docker-compose up -d
 ```
 
+- Start with custom database port:
+```bash
+DB_PORT=1434 docker-compose up -d
+```
+
 - View logs:
 ```bash
 docker-compose logs -f
@@ -202,6 +207,12 @@ For advanced users, you can customize the Docker environment:
    ```
    ACCEPT_EULA=Y
    MSSQL_SA_PASSWORD=YourCustomPassword
+   DB_PORT=1434  # Use a custom database port
+   ```
+
+3. Use environment variables when starting containers:
+   ```bash
+   DB_PORT=1434 docker-compose up -d
    ```
 
 ## Troubleshooting

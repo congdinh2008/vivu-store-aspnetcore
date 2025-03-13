@@ -6,7 +6,7 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=YourStrong@Passw0rd
     ports:
-      - "1433:1433"
+      - "${DB_PORT:-1433}:1433"
     volumes:
       - sqlserver-data:/var/opt/mssql
     networks:
@@ -36,6 +36,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=
       - ASPNETCORE_Kestrel__Certificates__Default__Password=
       - CORs__AllowedOrigins=http://localhost:4200,https://localhost:4200
+      - DB_PORT=${DB_PORT:-1433}  # Pass the database port to the API container
     depends_on:
       db:
         condition: service_healthy

@@ -13,7 +13,7 @@ namespace ViVuStore.API.Controllers;
 [ApiController]
 [Route("api/v{version:apiVersion}/categories")]
 [ApiVersion("1.0")]
-[Authorize(Roles = "System Administrator, Administrator")]
+// [Authorize(Roles = "System Administrator, Administrator")]
 public class CategoriesController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -151,4 +151,20 @@ public class CategoriesController : ControllerBase
 
         return Ok(result);
     }
+
+    /// <summary>
+    /// Deletes a category by ID.
+    /// </summary>
+    /// <param name="id">The unique identifier of the category to delete.</param>
+    /// <returns>A success status</returns>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var command = new CategoryDeleteByIdCommand { Id = id };
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+
 }

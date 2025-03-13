@@ -81,6 +81,10 @@ public class ViVuStoreDbContext: IdentityDbContext<User, Role, Guid>
         // Global query filter for soft delete
         builder.Entity<User>().HasQueryFilter(x => !x.IsDeleted);
         builder.Entity<Role>().HasQueryFilter(x => !x.IsDeleted);
+        builder.Entity<Category>().HasQueryFilter(x => !x.IsDeleted);
+        builder.Entity<Supplier>().HasQueryFilter(x => !x.IsDeleted);
+        builder.Entity<Product>().HasQueryFilter(x => !x.IsDeleted);
+        builder.Entity<Order>().HasQueryFilter(x => !x.IsDeleted);
     }
 
     public override int SaveChanges()

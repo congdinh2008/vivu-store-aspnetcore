@@ -182,7 +182,7 @@ app.UseCustomExceptionHandler();
 
 app.UseHttpsRedirection();
 
-app.UseCors("CorsPolicy");
+app.UseCors("AllowAnyOrigin");
 
 // Add authentication and authorization middleware
 app.UseAuthentication();

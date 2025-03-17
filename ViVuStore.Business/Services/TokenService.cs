@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using ViVuStore.Core.Constants;
 using ViVuStore.Data.UnitOfWorks;
 using ViVuStore.Models.Security;
 
@@ -83,7 +84,8 @@ public class TokenService : ITokenService
         {
             Token = refreshToken,
             ExpiryDate = DateTime.UtcNow.AddDays(expiryDays),
-            UserId = userId
+            UserId = userId,
+            CreatedById = CoreConstants.SystemAdministratorId
         };
         
         // Save to database

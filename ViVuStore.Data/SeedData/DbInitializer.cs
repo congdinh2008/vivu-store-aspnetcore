@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
+using ViVuStore.Core.Constants;
 using ViVuStore.Models.Security;
 
 namespace ViVuStore.Data.SeedData;
@@ -52,6 +53,11 @@ public static class DbInitializer
                     DateOfBirth = DateTime.Parse(user.DateOfBirth).ToUniversalTime(),
                     IsActive = true,
                 };
+
+                if(user.Role == "System Administrator")
+                {
+                    newUser.Id = CoreConstants.SystemAdministratorId;
+                }
 
                 string password = passwordHash.HashPassword(newUser, user.Password);
                 newUser.PasswordHash = password;

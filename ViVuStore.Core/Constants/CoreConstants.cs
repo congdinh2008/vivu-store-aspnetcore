@@ -2,7 +2,7 @@ namespace ViVuStore.Core.Constants;
 
 public class CoreConstants
 {
-    public static readonly Guid SystemAdministratorId = Guid.Parse("c7fddaee-0c2b-44d8-0c87-08dd624a30f6");
+    public static readonly Guid SystemAdministratorId = Guid.Parse("93f8139d-3195-4a4e-647b-08dd5c670130");
 
     public struct Schemas
     {

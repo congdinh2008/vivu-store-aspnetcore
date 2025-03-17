@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using ViVuStore.Core.Constants;
 using ViVuStore.Models.Security;
+using ViVuStore.Models.Common;
 
 namespace ViVuStore.Data.SeedData;
 
@@ -24,6 +25,16 @@ public static class DbInitializer
         }
 
         SeedUserAndRoles(userManager, roleManager, users, roles);
+
+        // Get the admin user for setting creator information
+        var adminUser = userManager.FindByNameAsync("systemadministrator").Result;
+        if (adminUser != null)
+        {
+            // Seed categories, suppliers, and products 
+            SeedCategories(context, adminUser.Id);
+            SeedSuppliers(context, adminUser.Id);
+            SeedProducts(context, adminUser.Id);
+        }
 
         context.SaveChanges();
     }
@@ -54,7 +65,7 @@ public static class DbInitializer
                     IsActive = true,
                 };
 
-                if(user.Role == "System Administrator")
+                if (user.Role == "System Administrator")
                 {
                     newUser.Id = CoreConstants.SystemAdministratorId;
                 }
@@ -83,7 +94,7 @@ public static class DbInitializer
                             continue;
                         }
 
-                        if(systemAdministrator != null)
+                        if (systemAdministrator != null)
                         {
                             newRole.CreatedById = systemAdministrator.Id;
                         }
@@ -95,8 +106,120 @@ public static class DbInitializer
                     if (!result2.Succeeded)
                     {
                         continue;
-                    } 
+                    }
                 }
+            }
+        }
+    }
+
+    private static void SeedCategories(ViVuStoreDbContext context, Guid createdById)
+    {
+        // Check if categories already exist
+        if (context.Set<Category>().Any())
+        {
+            return;
+        }
+
+        string categoriesJsonPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "wwwroot", "data", "categories.json");
+
+        if (File.Exists(categoriesJsonPath))
+        {
+            string jsonCategories = File.ReadAllText(categoriesJsonPath);
+            var categories = JsonConvert.DeserializeObject<List<CategoryJsonViewModel>>(jsonCategories);
+
+            if (categories != null)
+            {
+                foreach (var category in categories)
+                {
+                    context.Set<Category>().Add(new Category
+                    {
+                        Id = category.Id,
+                        Name = category.Name,
+                        Description = category.Description,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedById = createdById,
+                    });
+                }
+
+                context.SaveChanges();
+            }
+        }
+    }
+
+    private static void SeedSuppliers(ViVuStoreDbContext context, Guid createdById)
+    {
+        // Check if suppliers already exist
+        if (context.Set<Supplier>().Any())
+        {
+            return;
+        }
+
+        string suppliersJsonPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "wwwroot", "data", "suppliers.json");
+
+        if (File.Exists(suppliersJsonPath))
+        {
+            string jsonSuppliers = File.ReadAllText(suppliersJsonPath);
+            var suppliers = JsonConvert.DeserializeObject<List<SupplierJsonViewModel>>(jsonSuppliers);
+
+            if (suppliers != null)
+            {
+                foreach (var supplier in suppliers)
+                {
+                    context.Set<Supplier>().Add(new Supplier
+                    {
+                        Id = supplier.Id,
+                        Name = supplier.Name,
+                        Address = supplier.Address,
+                        PhoneNumber = supplier.PhoneNumber,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedById = createdById,
+                    });
+                }
+
+                context.SaveChanges();
+            }
+        }
+    }
+
+    private static void SeedProducts(ViVuStoreDbContext context, Guid createdById)
+    {
+        // Check if products already exist
+        if (context.Set<Product>().Any())
+        {
+            return;
+        }
+
+        string productsJsonPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "wwwroot", "data", "products.json");
+
+        if (File.Exists(productsJsonPath))
+        {
+            string jsonProducts = File.ReadAllText(productsJsonPath);
+            var products = JsonConvert.DeserializeObject<List<ProductJsonViewModel>>(jsonProducts);
+
+            if (products != null)
+            {
+                foreach (var product in products)
+                {
+                    context.Set<Product>().Add(new Product
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                        Description = product.Description,
+                        Price = product.Price,
+                        UnitInStock = product.UnitInStock,
+                        Thumbnail = product.Thumbnail,
+                        IsDiscontinued = product.IsDiscontinued,
+                        CategoryId = product.CategoryId,
+                        SupplierId = product.SupplierId,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedById = createdById,
+                    });
+                }
+
+                context.SaveChanges();
             }
         }
     }
@@ -115,10 +238,38 @@ internal class UserJsonViewModel
     public required string Email { get; set; }
 
     public required string Password { get; set; }
-    
+
     public required string PhoneNumber { get; set; }
 
     public required string DateOfBirth { get; set; }
 
     public required string Role { get; set; }
+}
+
+internal class CategoryJsonViewModel
+{
+    public Guid Id { get; set; }
+    public required string Name { get; set; }
+    public string? Description { get; set; }
+}
+
+internal class SupplierJsonViewModel
+{
+    public Guid Id { get; set; }
+    public required string Name { get; set; }
+    public string? Address { get; set; }
+    public string? PhoneNumber { get; set; }
+}
+
+internal class ProductJsonViewModel
+{
+    public Guid Id { get; set; }
+    public required string Name { get; set; }
+    public string? Description { get; set; }
+    public decimal Price { get; set; }
+    public int UnitInStock { get; set; }
+    public string? Thumbnail { get; set; }
+    public bool IsDiscontinued { get; set; }
+    public Guid? CategoryId { get; set; }
+    public Guid? SupplierId { get; set; }
 }

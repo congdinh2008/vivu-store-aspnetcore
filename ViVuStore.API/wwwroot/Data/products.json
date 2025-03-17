@@ -1,0 +1,112 @@
+[
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afc1",
+    "Name": "Ultra Pro Smartphone",
+    "Description": "Latest flagship smartphone with 6.7-inch display, 128GB storage, and 5G capability",
+    "Price": 999.99,
+    "UnitInStock": 50,
+    "Thumbnail": "smartphone.jpg",
+    "IsDiscontinued": false,
+    "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa1",
+    "SupplierId": "3fa85f64-5717-4562-b3fc-2c963f66afb1"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afc2",
+    "Name": "Lightweight Ultrabook",
+    "Description": "13-inch ultrabook with Intel i7 processor, 16GB RAM, and 512GB SSD",
+    "Price": 1299.99,
+    "UnitInStock": 30,
+    "Thumbnail": "ultrabook.jpg",
+    "IsDiscontinued": false,
+    "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa1",
+    "SupplierId": "3fa85f64-5717-4562-b3fc-2c963f66afb1"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afc3",
+    "Name": "Designer Denim Jacket",
+    "Description": "Premium denim jacket with stylish distressed details and comfortable fit",
+    "Price": 89.99,
+    "UnitInStock": 100,
+    "Thumbnail": "denim_jacket.jpg",
+    "IsDiscontinued": false,
+    "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa2",
+    "SupplierId": "3fa85f64-5717-4562-b3fc-2c963f66afb2"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afc4",
+    "Name": "Casual Sneakers",
+    "Description": "Comfortable and stylish sneakers perfect for everyday wear",
+    "Price": 59.99,
+    "UnitInStock": 120,
+    "Thumbnail": "sneakers.jpg",
+    "IsDiscontinued": false,
+    "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa2",
+    "SupplierId": "3fa85f64-5717-4562-b3fc-2c963f66afb2"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afc5",
+    "Name": "Modern Coffee Table",
+    "Description": "Sleek coffee table with tempered glass top and wooden legs",
+    "Price": 249.99,
+    "UnitInStock": 25,
+    "Thumbnail": "coffee_table.jpg",
+    "IsDiscontinued": false,
+    "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa3",
+    "SupplierId": "3fa85f64-5717-4562-b3fc-2c963f66afb3"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afc6",
+    "Name": "Smart Kitchen Blender",
+    "Description": "High-powered blender with multiple speed settings and programmable features",
+    "Price": 129.99,
+    "UnitInStock": 40,
+    "Thumbnail": "blender.jpg",
+    "IsDiscontinued": false,
+    "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa3",
+    "SupplierId": "3fa85f64-5717-4562-b3fc-2c963f66afb3"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afc7",
+    "Name": "Bestselling Novel",
+    "Description": "Award-winning fiction novel by a renowned author",
+    "Price": 24.99,
+    "UnitInStock": 200,
+    "Thumbnail": "novel.jpg",
+    "IsDiscontinued": false,
+    "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa4",
+    "SupplierId": "3fa85f64-5717-4562-b3fc-2c963f66afb4"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afc8",
+    "Name": "Self-Help Guide",
+    "Description": "Practical guide to personal development and productivity",
+    "Price": 19.99,
+    "UnitInStock": 150,
+    "Thumbnail": "self_help.jpg",
+    "IsDiscontinued": false,
+    "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa4",
+    "SupplierId": "3fa85f64-5717-4562-b3fc-2c963f66afb4"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afc9",
+    "Name": "Trail Running Shoes",
+    "Description": "Durable shoes with excellent traction for trail running and hiking",
+    "Price": 139.99,
+    "UnitInStock": 80,
+    "Thumbnail": "trail_shoes.jpg",
+    "IsDiscontinued": false,
+    "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa5",
+    "SupplierId": "3fa85f64-5717-4562-b3fc-2c963f66afb5"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afca",
+    "Name": "Camping Tent",
+    "Description": "Waterproof 4-person tent, easy to set up and pack away",
+    "Price": 179.99,
+    "UnitInStock": 35,
+    "Thumbnail": "tent.jpg",
+    "IsDiscontinued": false,
+    "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa5",
+    "SupplierId": "3fa85f64-5717-4562-b3fc-2c963f66afb5"
+  }
+]

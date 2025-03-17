@@ -1,0 +1,27 @@
+[
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afa1",
+    "Name": "Electronics",
+    "Description": "Electronic devices and accessories including smartphones, laptops, and cameras"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afa2",
+    "Name": "Fashion",
+    "Description": "Clothing, footwear, and accessories for men, women, and children"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afa3",
+    "Name": "Home & Kitchen",
+    "Description": "Furniture, appliances, and decor items for every room in your home"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afa4",
+    "Name": "Books",
+    "Description": "Fiction, non-fiction, textbooks, and e-books across various genres"
+  },
+  {
+    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afa5",
+    "Name": "Sports & Outdoors",
+    "Description": "Equipment and gear for various sports and outdoor activities"
+  }
+]

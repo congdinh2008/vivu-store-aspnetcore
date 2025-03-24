@@ -19,8 +19,8 @@ public class SupplierCreateUpdateCommandHandler : BaseHandler,
     public Task<SupplierViewModel> Handle(
         SupplierCreateUpdateCommand request, CancellationToken cancellationToken)
     {
-        return request.Id.HasValue 
-            ? Update(request, cancellationToken) 
+        return request.Id.HasValue
+            ? Update(request, cancellationToken)
             : Create(request, cancellationToken);
     }
 
@@ -34,12 +34,7 @@ public class SupplierCreateUpdateCommandHandler : BaseHandler,
             throw new ResourceUniqueException($"Supplier with name '{request.Name}' already exists");
         }
 
-        var entity = new Supplier
-        {
-            Name = request.Name,
-            Address = request.Address,
-            PhoneNumber = request.PhoneNumber
-        };
+        var entity = _mapper.Map<Supplier>(request);
 
         _unitOfWork.SupplierRepository.Add(entity);
         var result = await _unitOfWork.SaveChangesAsync();
@@ -76,9 +71,7 @@ public class SupplierCreateUpdateCommandHandler : BaseHandler,
             }
         }
 
-        entity.Name = request.Name;
-        entity.Address = request.Address;
-        entity.PhoneNumber = request.PhoneNumber;
+        _mapper.Map(request, entity);
 
         _unitOfWork.SupplierRepository.Update(entity);
         var result = await _unitOfWork.SaveChangesAsync();
@@ -88,11 +81,11 @@ public class SupplierCreateUpdateCommandHandler : BaseHandler,
             throw new DatabaseBadRequestException("Failed to update supplier");
         }
 
-        var updatedEntity = await _unitOfWork.SupplierRepository.GetQuery()
+        var updatedEntity = await _unitOfWork.SupplierRepository.GetQueryWithInactive(x => x.Id == entity.Id)
             .Include(x => x.CreatedBy)
             .Include(x => x.UpdatedBy)
             .Include(x => x.DeletedBy)
-            .FirstOrDefaultAsync(x => x.Id == entity.Id, cancellationToken) ??
+            .FirstOrDefaultAsync(cancellationToken) ??
             throw new ResourceNotFoundException($"Supplier with ID {entity.Id} not found");
 
         return _mapper.Map<SupplierViewModel>(updatedEntity);

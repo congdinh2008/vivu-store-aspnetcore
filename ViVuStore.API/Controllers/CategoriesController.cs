@@ -13,7 +13,7 @@ namespace ViVuStore.API.Controllers;
 [ApiController]
 [Route("api/v{version:apiVersion}/categories")]
 [ApiVersion("1.0")]
-// [Authorize(Roles = "System Administrator, Administrator")]
+[Authorize(Roles = "System Administrator, Administrator")]
 public class CategoriesController : ControllerBase
 {
     private readonly IMediator _mediator;

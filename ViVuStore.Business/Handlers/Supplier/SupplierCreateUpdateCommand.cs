@@ -3,7 +3,7 @@ using ViVuStore.Business.ViewModels;
 
 namespace ViVuStore.Business.Handlers;
 
-public class SupplierCreateUpdateCommand : BaseCreateUpdateCommand<SupplierViewModel>
+public class SupplierCreateUpdateCommand : MasterBaseCreateCommand<SupplierViewModel>
 {
     [Required(ErrorMessage = "The {0} field is required.")]
     [StringLength(255,

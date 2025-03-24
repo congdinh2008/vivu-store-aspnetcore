@@ -19,9 +19,9 @@ public class RegisterRequestCommandHandler : BaseHandler, IRequestHandler<Regist
     private readonly IConfiguration _configuration;
 
     public RegisterRequestCommandHandler(
-        IUnitOfWork unitOfWork, 
-        IMapper mapper, 
-        UserManager<User> userManager, 
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        UserManager<User> userManager,
         ITokenService tokenService,
         IConfiguration configuration) : base(unitOfWork, mapper)
     {
@@ -38,13 +38,13 @@ public class RegisterRequestCommandHandler : BaseHandler, IRequestHandler<Regist
         {
             throw new InvalidOperationException("Username already exists");
         }
-        
+
         var existingUserByEmail = await _userManager.FindByEmailAsync(request.Email);
         if (existingUserByEmail != null)
         {
             throw new InvalidOperationException("Email already exists");
         }
-        
+
         // Create new user
         var user = new User
         {
@@ -57,40 +57,50 @@ public class RegisterRequestCommandHandler : BaseHandler, IRequestHandler<Regist
             IsActive = true,
             EmailConfirmed = true // In production, implement email confirmation
         };
-        
+
         // Add the user using UserManager
         var result = await _userManager.CreateAsync(user, request.Password);
-        
+
         if (!result.Succeeded)
         {
             var errors = result.Errors.Select(e => e.Description);
             throw new InvalidOperationException($"Failed to create user: {string.Join(", ", errors)}");
         }
-        
+
         // Assign default role
         await _userManager.AddToRoleAsync(user, RoleConstants.User);
-        
+
         // Get user roles
         var userRoles = await _userManager.GetRolesAsync(user);
-        
+
         // Generate access token
         var accessToken = await _tokenService.GenerateTokenAsync(user, userRoles);
-        
+
         // Generate refresh token
         var refreshToken = await _tokenService.GenerateRefreshTokenAsync(user.Id);
-        
+
         // Get token expiration from config
         if (!int.TryParse(_configuration["JWT:AccessTokenExpiryMinutes"], out var expiryMinutes))
         {
             expiryMinutes = 15;
         }
-        
+
         // Return login response
         return new LoginResponse
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken.Token,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(expiryMinutes)
+            ExpiresAt = DateTime.UtcNow.AddMinutes(expiryMinutes),
+            User = new UserInformation
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DisplayName = user.DisplayName,
+                Roles = userRoles
+            }
         };
     }
 }

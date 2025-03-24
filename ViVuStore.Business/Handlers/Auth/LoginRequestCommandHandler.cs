@@ -77,7 +77,17 @@ public class LoginRequestCommandHandler :
         {
             AccessToken = accessToken,
             RefreshToken = refreshTokenEntity.Token,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(expiryMinutes)
+            ExpiresAt = DateTime.UtcNow.AddMinutes(expiryMinutes),
+            User = new UserInformation
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DisplayName = user.DisplayName,
+                Roles = userRoles
+            }
         };
     }
 }
